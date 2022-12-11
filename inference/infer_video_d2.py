@@ -57,7 +57,7 @@ def parse_args():
 def get_resolution(filename):
     command = ['ffprobe', '-v', 'error', '-select_streams', 'v:0',
                '-show_entries', 'stream=width,height', '-of', 'csv=p=0', filename]
-    pipe = sp.Popen(command, stdout=sp.PIPE, bufsize=-1)
+    pipe = sp.Popen(command, stdout=sp.PIPE, bufsize=-1, shell=True)
     for line in pipe.stdout:
         w, h = line.decode().strip().split(',')
         return int(w), int(h)
@@ -95,6 +95,7 @@ def main(args):
         im_list = [args.im_or_folder]
 
     for video_name in im_list:
+        print(video_name)
         out_name = os.path.join(
                 args.output_dir, os.path.basename(video_name)
             )
@@ -149,4 +150,5 @@ def main(args):
 if __name__ == '__main__':
     setup_logger()
     args = parse_args()
+    print(args)
     main(args)
